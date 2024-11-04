@@ -1,0 +1,51 @@
+<div class="question-container">
+  <div class="vote-section">
+    <div class="vote-box">
+      <button mat-icon-button (click)="upvote()" aria-label="Upvote">
+        <mat-icon matTooltip="Useful">arrow_upward</mat-icon>
+      </button>
+      <div class="vote-count">{{ question.voted }}</div>
+      <button mat-icon-button (click)="downvote()" aria-label="Downvote">
+        <mat-icon matTooltip="Not Useful">arrow_downward</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="question-content">
+    <h6>{{ question.title }}</h6>
+    <span class="answer-details">
+      Asked by {{ question.userName }} on {{ question.datePosted | date: 'EEEE, MMMM d, y' }}
+    </span>
+    <p>{{ question.body }}</p>
+  </div>
+</div>
+
+<div class="answers-container">
+  <h6>{{answers.length}} Answers</h6>
+  <div class="answer-container" *ngFor="let answer of answers">
+    <div class="vote-section">
+      <div class="vote-box">
+        <button mat-icon-button (click)="upvote()" aria-label="Upvote">
+          <mat-icon matTooltip="Useful">arrow_upward</mat-icon>
+        </button>
+        <div class="vote-count">{{ answer.votesCount }}</div>
+        <button mat-icon-button (click)="downvote()" aria-label="Downvote">
+          <mat-icon matTooltip="Not Useful">arrow_downward</mat-icon>
+        </button>
+        <div *ngIf="answer.isApproved" class="approved-icon">
+          <mat-icon color="primary" matTooltip="Approved By Author">check_circle</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="answer-content">
+      <h4>{{ answer.title }}</h4>
+      <span class="answer-details">
+        Answered by {{ answer.userName }} on {{ answer.datePosted | date: 'EEEE, MMMM d, y' }}
+      </span>
+      <span>
+        <p>{{ answer.body }}</p>
+      </span>
+    </div>
+  </div>
+</div>

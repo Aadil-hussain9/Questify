@@ -1,0 +1,81 @@
+.answer-container {
+  display: flex;
+  align-items: flex-start;
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.question-detail-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 16px;
+}
+
+.vote-count {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.approved-icon mat-icon {
+  color: green;
+}
+
+.answer-content {
+  flex: 1;
+}
+
+.answer-details {
+  display: block;
+  margin-top: 8px;
+  color: #666;
+  font-size: 0.9em;
+}
+.question-detail-section button {
+  margin: 4px 0;
+}
+
+.approved-icon {
+  margin-top: 8px;
+}
+.question-detail-section {
+  display: flex;
+  align-items: center; /* Align vertically in the center */
+}
+
+.vote-box {
+  display: flex;
+  flex-direction: column; /* Stack arrows and count vertically */
+  align-items: center; /* Center align contents */
+  background: #f0f0f0; /* Light background for the vote box */
+  border-radius: 8px; /* Rounded corners */
+  padding: 8px; /* Padding around the content */
+  margin-right: 16px; /* Space between the vote box and content */
+}
+
+.vote-count {
+  font-size: 16px; /* Font size for the vote count */
+  font-weight: bold; /* Make the vote count stand out */
+}
+
+.question-container,
+.answer-container {
+  display: flex;
+  margin-bottom: 16px; /* Space between question/answer sections */
+  border: 1px solid #e0e0e0; /* Border for visual separation */
+  border-radius: 8px; /* Rounded corners */
+  padding: 16px; /* Padding for inner content */
+  background: #fff; /* White background for question and answers */
+}
+
+.question-content,
+.answer-content {
+  flex: 1; /* Allow content to take up remaining space */
+}
+
+.approved-icon {
+  margin-top: 4px; /* Space above the approved icon */
+}

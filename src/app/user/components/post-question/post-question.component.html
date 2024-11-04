@@ -1,0 +1,64 @@
+<mat-spinner [color]="'primary'" [diameter]="60" [strokeWidth]="6" *ngIf="isSubmitting"></mat-spinner>
+<div class="parent" *ngIf="!isSubmitting">
+  <div class="child">
+    <h2 class="question-caption">Post Question</h2>
+
+    <!-- Form Start -->
+    <form [formGroup]="validateForm">
+
+      <!-- Title Field -->
+      <div class="form-input">
+        <mat-form-field class="example-chip-list" appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput placeholder="Title" formControlName="title" required />
+          <mat-error *ngIf="validateForm.get('title').invalid && (validateForm.get('title').dirty || validateForm.get('title').touched)">
+            Title is required!
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Body Field -->
+      <div class="form-input">
+        <mat-form-field class="example-chip-list" appearance="fill">
+          <mat-label>Body</mat-label>
+          <textarea matInput rows="6" placeholder="Body" formControlName="body" required></textarea>
+          <mat-error *ngIf="validateForm.get('body').invalid && (validateForm.get('body').dirty || validateForm.get('body').touched)">
+            Body is required!
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- Tags Field -->
+      <mat-form-field class="example-chip-list">
+        <mat-label>Language Tags</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Tag selection">
+          <mat-chip-row *ngFor="let tag of tags.value" (removed)="remove(tag)">
+            {{ tag }}
+            <button matChipRemove [attr.aria-label]="'remove ' + tag">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input
+          name="currentTag"
+          placeholder="New Tag..."
+          [formControl]="currentTag"
+          [matChipInputFor]="chipGrid"
+          [matAutocomplete]="auto"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)" formControlName="tags"
+        />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          @for (fruit of filteredTags(); track fruit) {
+            <mat-option [value]="fruit">{{fruit}}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!-- Submit Button -->
+      <button mat-raised-button color="primary" class="login-form-button" type="submit"
+      [disabled]="validateForm.invalid" (click)="postQuestion()">Post Question</button>
+
+    </form>
+  </div>
+</div>

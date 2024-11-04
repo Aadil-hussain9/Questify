@@ -1,0 +1,36 @@
+<div xmlns="http://www.w3.org/1999/html">
+  <mat-toolbar class="navbar">
+    <a class="navbar-brand" routerLink="/user/dashboard">
+      <img src="img_1.png" alt="Questify Logo" style="margin-top: 12px; height: 60px; width: auto;">
+    </a>
+    <span class="spacer"></span>
+
+    <ng-container *ngIf="!isUserLoggedIn">
+      <button mat-stroked-button routerLink="/login" routerLinkActive="active">Login</button>
+      <button mat-flat-button routerLink="/signup" routerLinkActive="active">Signup</button>
+    </ng-container>
+
+    <ng-container *ngIf="isUserLoggedIn">
+      <button mat-stroked-button routerLink="/user/dashboard" routerLinkActive="active">Dashboard</button>
+      <button mat-stroked-button routerLink="/user/question" routerLinkActive="active">Post Question</button>
+      <button mat-stroked-button routerLink="/user/search-question" routerLinkActive="active">Search Question</button>
+      <!--      <button mat-stroked-button routerLink="/user/my-questions" routerLinkActive="active">My Questions</button>-->
+      <!--      <button mat-flat-button (click)="logout()" routerLinkActive="active">Logout</button>-->
+
+      <!-- Avatar Dropdown -->
+      <button mat-icon-button [matMenuTriggerFor]="menu" style="background: #36b7d7" class="avatar-button">
+        <div style="color: white" class="avatar-circle">{{userName}}</div>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>settings</mat-icon>
+          <span>Settings</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </ng-container>
+  </mat-toolbar>
+</div>

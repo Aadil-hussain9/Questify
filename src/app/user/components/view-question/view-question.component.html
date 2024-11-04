@@ -1,0 +1,144 @@
+<div class="main-container">
+  <!-- Outer box with fixed height -->
+  <div class="scrollable-content">
+    <!-- Question Section -->
+    <div class="question-container">
+      <div class="vote-section">
+        <div class="vote-box">
+          <button
+                  [ngStyle]="{'background':question.voted===1? '#6fa666':'inherit'}"
+                  mat-icon-button (click)="addVoteToQuestion('UPVOTE', question.voted)" aria-label="Upvote">
+            <mat-icon matTooltip="Useful">arrow_upward</mat-icon>
+          </button>
+          <div class="vote-count">{{ question.voteCount }}</div>
+          <button
+            [ngStyle]="{'background':question.voted===-1?'#e15b5b':'inherit'}"
+            mat-icon-button (click)="addVoteToQuestion('DOWNVOTE', question.voted)" aria-label="Downvote">
+            <mat-icon matTooltip="Not Useful">arrow_downward</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="question-content">
+        <h6>{{ question.title }}</h6>
+        <span class="person-details">
+  <span class="static-text">Asked by </span>
+  <span class="dynamic-text">{{ question.userName }}</span>
+  <span class="static-text"> on </span>
+  <span class="dynamic-text">{{getFormattedDate(question.datePosted)}}</span>
+  <span class="static-text"> - Viewed </span>
+  <b class="dynamic-text">{{ question.viewCount }}</b>
+  <span class="static-text"> times</span>
+</span>
+
+        <p>{{ question.body }}</p>
+        <div class="tag-list">
+          <mat-chip-listbox>
+            <mat-chip *ngFor="let tag of question.tags" color="primary">{{ tag }}</mat-chip>
+          </mat-chip-listbox>
+        </div>
+      </div>
+    </div>
+
+    <!-- Answers Section -->
+    <div class="answers-container">
+      <h6>{{ answers.length }} Answers</h6>
+      <div class="answer-container" *ngFor="let answer of answers">
+        <div class="answer-card">
+          <div class="vote-section">
+            <div class="vote-box">
+              <button mat-icon-button
+                      [ngStyle]="{'background':answer.voted===1? '#6fa666':'inherit'}"
+                      (click)="addVoteToAnswer('UPVOTE', answer.id, answer.voted)" aria-label="Upvote">
+                <mat-icon matTooltip="Useful">arrow_upward</mat-icon>
+              </button>
+              <div class="vote-count">{{ answer.voteCount }}</div>
+              <button mat-icon-button
+                      [ngStyle]="{'background':answer.voted===-1?'#e15b5b':'inherit'}"
+                      (click)="addVoteToAnswer('DOWNVOTE', answer.id, answer.voted)"
+                      aria-label="Downvote">
+                <mat-icon matTooltip="Not Useful">arrow_downward</mat-icon>
+              </button>
+              <div *ngIf="answer.approved" class="approved-icon">
+                <mat-icon style="color: green" matTooltip="Approved By Author">check_circle</mat-icon>
+              </div>
+              <mat-icon style="margin-bottom: 15px;margin-top: 10px" matTooltip="save this answer">bookmark_border</mat-icon>
+              <mat-icon matTooltip="view related details">cached</mat-icon>
+            </div>
+          </div>
+
+          <div class="answer-content">
+            <h4>{{ answer.title }}</h4>
+            <span class="person-details">
+                 <span class="static-text">Answered by </span>
+                  <span *ngIf="answer.userId === StorageService.getUserId() else bysection">
+                    Author of this Question ✅
+                  </span>
+              <ng-template #bysection class="dynamic-text">
+                <span>{{ answer.userName }}</span>
+              </ng-template>
+                  <span class="static-text"> on </span>
+                  <span class="dynamic-text">{{ getFormattedDate(answer.postedDate)}}</span>
+           </span>
+            <p>{{ answer.body }}</p>
+            <div *ngIf="answer.convertedImg">
+              <img class="answer-image" [src]="answer.convertedImg" alt="Answer Image"/>
+            </div>
+
+
+            <div class="comment-section" *ngFor="let comment of answer.answerComments">
+              <span style="margin-top: 20px">Comments</span>
+              <hr>
+              <p>{{ comment.body }}</p>
+              <span class="comment-details" style="font-size: 14px; color: #888">
+                <mat-divider vertical></mat-divider>
+               Commented by {{ comment.userName }} - On {{ getFormattedDate(comment.createdDate)}}
+              </span>
+            </div>
+
+            <div class="add-comment-section">
+              <mat-form-field appearance="fill">
+                <mat-label>Comment</mat-label>
+                <input #comment matInput placeholder="Add Comment..."/>
+              </mat-form-field>
+              <button class="button" mat-button (click)="addCommentToAnswer(comment, answer.id)">Comment</button>
+            </div>
+            <div
+              *ngIf="question.userId === StorageService.getUserId() && !answer.approved && answer.userId !== StorageService.getUserId()">
+              <button mat-raised-button color="primary" (click)="approveAnswer(answer.id)">Approve Answer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Post Answer Section -->
+    <div class="answer-section" style="margin-top: 30px;">
+      <h6>Post Your Answer ⌨️</h6>
+      <form [formGroup]="validateForm" (ngSubmit)="addAnswer()">
+        <mat-form-field appearance="fill" style="width: 100%">
+          <mat-label>Solution</mat-label>
+          <textarea matInput rows="2" placeholder="Write Answer precisely..." formControlName="body"></textarea>
+        </mat-form-field>
+
+        <div class="form-field">
+          <div class="image-preview" *ngIf="selectedFile">
+            <img [src]="imagePreview" height="200" width="200" alt="Image Preview"/>
+          </div>
+          <input style="margin-bottom: 10px" id="file" type="file" accept="image/png, image/jpeg"
+                 (change)="onFileSelected($event)"/>
+        </div>
+
+        <button
+          mat-raised-button
+          [ngStyle]="{
+            'background-color': validateForm.invalid ? '#0000003d' : '#ff6fc8',
+            'color': validateForm.invalid ? 'inherit' : 'white'
+          }"
+          [disabled]="validateForm.invalid">
+          Post Your Answer
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

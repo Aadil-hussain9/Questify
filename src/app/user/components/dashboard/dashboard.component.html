@@ -1,0 +1,74 @@
+<div class="main-container">
+  <!-- Outer box with fixed height -->
+  <div class="scrollable-content" style="max-height: 850px;">
+    <div *ngIf="questions">
+      <div>
+        <div class="filter-container">
+          <mat-radio-group class="radio">
+            <mat-radio-button value="radio" (click)="getLatestQuestions()">Latest Questions</mat-radio-button>
+          </mat-radio-group>
+          <section class="my-checkbox">
+            <mat-checkbox class="example-margin" (change)="getMyQuestionsOnly($event)">Show My questions only</mat-checkbox>
+          </section>
+        </div>
+
+        <div >
+        <!-- If no questions found -->
+        <ng-container *ngIf="questions.length === 0; else questionList">
+          <mat-card class="empty-message">
+            <mat-card-content>
+              <mat-icon>sentiment_dissatisfied</mat-icon>
+              <p>No questions found.</p>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+
+        <!-- If questions are found -->
+        <ng-template #questionList>
+          <div class="question-container" *ngFor="let question of questions">
+            <!-- left side: details section -->
+            <div class="question-detail-section">
+              <span class="detail-item"><b style="color: #110e0e">{{ question.voteCount }}</b> votes</span>
+              <span class="detail-item"><b style="color: #110e0e">{{ question.viewCount }}</b> views</span>
+            </div>
+
+            <div class="question-content-container">
+              <!-- Left side: Question title and content -->
+              <div class="question-details">
+                <h2 class="question-title">
+                  <a style="text-decoration: none;" routerLink="/user/question/{{question.id}}">
+                    {{ question.title }}
+                  </a>
+                </h2>
+                <p class="question-body">{{ question.body }}</p>
+                <div class="tags-container">
+                  <mat-chip-listbox>
+                    <mat-chip color="primary" *ngFor="let tag of question.tags">{{ tag }}</mat-chip>
+                  </mat-chip-listbox>
+                </div>
+                <h6 style="font: 400 0.7rem / 0.5rem Roboto, sans-serif; text-align: end">
+                  Posted By: <b>{{ question.userName }}</b> - Posted On:
+                  <b>{{ getFormattedDate(question.datePosted) }}</b>
+                </h6>
+              </div>
+            </div>
+
+            <!-- Horizontal line between questions -->
+            <hr />
+          </div>
+        </ng-template>
+
+        <!-- Pagination control -->
+        <div class="pagination">
+          <mat-paginator
+            [length]="total"
+            [pageIndex]="pageNum"
+            [pageSize]="5"
+            (page)="pageIndexChange($event)">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

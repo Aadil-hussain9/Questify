@@ -1,0 +1,15 @@
+.container {
+  min-height: 91vh;
+  padding: 30px;
+
+  .search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .search-field {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+}
