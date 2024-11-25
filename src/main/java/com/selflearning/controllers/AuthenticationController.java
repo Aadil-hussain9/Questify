@@ -1,15 +1,17 @@
 package com.selflearning.controllers;
 
 import com.selflearning.dtos.AuthenticationRequest;
-import com.selflearning.dtos.AuthenticationResponse;
+import com.selflearning.dtos.SignupDto;
+import com.selflearning.dtos.UserDto;
 import com.selflearning.entities.User;
 import com.selflearning.services.USerDetailsServiceImpl;
 import com.selflearning.services.UserService;
-import com.selflearning.services.UserServiceImpl;
 import com.selflearning.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -31,13 +33,13 @@ public class AuthenticationController {
 
     private final String TOKEN_PREFIX = "Bearer";
     private final String HEADER_STRING = "Authorization";
-    private final UserService service;
+    private final UserService userService;
 
     public AuthenticationController(AuthenticationManager authenticationManager, USerDetailsServiceImpl uSerDetailsService, JwtUtil jwtUtil, UserService service) {
         this.authenticationManager = authenticationManager;
         this.uSerDetailsService = uSerDetailsService;
         this.jwtUtil = jwtUtil;
-        this.service = service;
+        this.userService = service;
     }
 
     @PostMapping("/authentication")
@@ -54,7 +56,7 @@ public class AuthenticationController {
         }
       UserDetails userDetails =  uSerDetailsService.loadUserByUsername(request.getEmail());
         String jwtToken = jwtUtil.generateToken(userDetails.getUsername());
-        Optional<User> optionalUser = service.findUserByUserName(request.getEmail());
+        Optional<User> optionalUser = userService.findUserByUserName(request.getEmail());
         // Create a JSON object to hold userId and userName
         JSONObject jsonResponse = new JSONObject();
         if (optionalUser.isPresent()) {
@@ -70,5 +72,18 @@ public class AuthenticationController {
         response.setHeader("Access-Control-Allow-Headers","Authorization," +
                 " X-PINGOTHER,X-Requested-With,Content-Type,Accept,X-Custom-header");
         response.setHeader(HEADER_STRING,TOKEN_PREFIX + jwtToken);
+    }
+
+    @PostMapping(value = "/signup")
+    public ResponseEntity<?> createUser(@RequestBody SignupDto signupDto){
+        if(userService.hasUserWithEmail(signupDto.getEmail())){
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
+                    .body("user already exists with email: "+signupDto.getEmail());
+        }
+        UserDto createdUser =  userService.createUser(signupDto);
+        if(createdUser == null){
+            return ResponseEntity.badRequest().body("user not created, Try again");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 }

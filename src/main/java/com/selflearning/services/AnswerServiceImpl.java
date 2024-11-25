@@ -40,6 +40,9 @@ public class AnswerServiceImpl implements AnswerService {
             answer.setQuestion(optionalQuestion.get());
             answer.setBody(answerDto.getBody());
             answer.setCreatedDate(new Date());
+            if (Objects.equals(optionalQuestion.get().getUser().getId(), answerDto.getUserId())) {
+                answer.setApproved(true);
+            }
             Answer savedAnswer = answerRepository.save(answer);
 
             return AnswerDto.builder()

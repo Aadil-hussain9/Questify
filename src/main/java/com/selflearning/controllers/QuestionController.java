@@ -4,18 +4,26 @@ import com.selflearning.dtos.AllQuestionsResponseDto;
 import com.selflearning.dtos.QuestionDto;
 import com.selflearning.dtos.QuestionSearchResponseDto;
 import com.selflearning.dtos.SingleQuestionDto;
+import com.selflearning.entities.Answer;
+import com.selflearning.entities.Question;
+import com.selflearning.entities.User;
+import com.selflearning.services.DummyDataService;
 import com.selflearning.services.QuestionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/question")
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final DummyDataService dummyDataService;
 
-    public QuestionController(QuestionService questionService) {
+    public QuestionController(QuestionService questionService, DummyDataService dummyDataService) {
         this.questionService = questionService;
+        this.dummyDataService = dummyDataService;
     }
 
     @PostMapping
@@ -64,5 +72,31 @@ public class QuestionController {
     public ResponseEntity<Void> incrementViewCount(@PathVariable Long questionId) {
         questionService.incrementViewCount(questionId);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/generate-questions")
+    public ResponseEntity<List<Question>> generateQuestions() {
+
+        // First generate users
+
+        // Then generate questions
+        List<Question> questions = dummyDataService.generateDummyQuestions(100);
+
+        return ResponseEntity.ok(questions);
+    }
+
+    @PostMapping("/generate-users")
+    public ResponseEntity<List<User>> generateUsers() {
+        List<User> users = dummyDataService.generateDummyUsers(100);
+        return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/generate-answers")
+    public ResponseEntity<List<Answer>> generateAnswers(
+            @RequestParam(defaultValue = "5") int answersPerQuestion) {
+        List<Answer> answerList =  dummyDataService.generateDummyAnswers(2);
+        // Note: This assumes you have users and questions already in the database
+        // You'll need to inject the appropriate repositories and fetch existing users/questions
+        return ResponseEntity.ok().body(answerList);
     }
 }
