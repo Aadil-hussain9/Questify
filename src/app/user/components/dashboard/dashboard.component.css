@@ -1,0 +1,184 @@
+/* Existing container style with fixed min-height */
+/*.container {*/
+/*  min-height: 91vh;*/
+/*  padding: 30px;*/
+/*}*/
+
+/* Scrollable content for the main container */
+.scrollable-content {
+  max-height: 90vh;
+  width: 100%;
+  overflow-y: auto;
+  /*border: 1px solid #ccc;*/
+  border-radius: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px;
+  }
+}
+
+/* Style for individual questions */
+.question-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: flex-start;
+}
+
+/* Ensures question details and vote sections align horizontally */
+.question-content-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.question-details {
+  width: 80%;
+}
+
+.question-detail-section {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  color: #6b6b6b; /* Subtle gray color for text */
+  font-size: 0.875rem; /* Small font size for compact look */
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #f3f3f3; /* Light background for each item */
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* Hover effect for interactivity */
+.detail-item:hover {
+  background-color: #e0e0e0; /* Darker shade on hover */
+}
+
+/* Title and content styling */
+.question-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.question-content {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+@media (max-width: 600px) {
+  .question-content {
+    font-size: 14px;
+  }
+}
+
+/* Tags container styling */
+.tags-container {
+  margin-top: 10px;
+}
+
+.mat-chip-listbox {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* Pagination section */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+mat-paginator {
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  mat-paginator {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+}
+
+/* Empty message styling */
+.empty-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.empty-message mat-icon {
+  font-size: 64px;
+  margin-bottom: 10px;
+}
+
+.empty-message p {
+  font-size: 18px;
+}
+
+/* filter button styling */
+.filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%; /* Adjust as needed */
+}
+
+.radio {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.my-checkbox {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sidenav {
+  width: 60px; /* Adjust width as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.avatar-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  /*background-color: #3f51b5;*/
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+mat-menu {
+  margin-left: 20px; /* Adjust as needed */
+}

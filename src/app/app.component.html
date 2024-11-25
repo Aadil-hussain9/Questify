@@ -1,0 +1,16 @@
+<app-sidebar-nav></app-sidebar-nav>
+<!--<ngx-spinner bdColor = "rgba(0, 0, 0, 0.8)" size = "medium" color = "#ff0000" type = "ball-newton-cradle" [fullScreen] = "true"><p style="color: white" > Loading... </p></ngx-spinner>-->
+
+<!--<ngx-spinner bdColor="rgba(7,1,1,0.95)" size="small" type="pacman">-->
+<!--  <p style="color: white">Loading Portfolio </p>-->
+<!--</ngx-spinner>-->
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.4)"
+  size="medium"
+  color="#fff"
+  type="ball-newton-cradle"
+  [fullScreen]="true">
+  <p style="color: white; font-size: 20px;">{{ loadingText }}</p>
+</ngx-spinner>
+
+<router-outlet></router-outlet>

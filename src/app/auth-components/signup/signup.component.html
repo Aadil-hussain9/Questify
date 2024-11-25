@@ -1,0 +1,346 @@
+<!--<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">-->
+<!--  <div class="sm:mx-auto sm:w-full sm:max-w-md">-->
+<!--    <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">-->
+<!--      Create your account-->
+<!--    </h2>-->
+<!--    <p class="mt-2 text-center text-sm text-gray-600">-->
+<!--      Already have an account?-->
+<!--      <a routerLink="/login" class="font-medium text-indigo-600 hover:text-indigo-500">-->
+<!--        Sign in-->
+<!--      </a>-->
+<!--    </p>-->
+<!--  </div>-->
+
+<!--  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">-->
+<!--    <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">-->
+<!--      <form [formGroup]="signupForm" (ngSubmit)="signUp()" class="space-y-6">-->
+<!--        &lt;!&ndash; Name Field &ndash;&gt;-->
+<!--        <div>-->
+<!--          <label for="name" class="block text-sm font-medium text-gray-700">-->
+<!--            Full Name-->
+<!--          </label>-->
+<!--          <div class="mt-1 relative">-->
+<!--            <mat-icon class="absolute left-3 top-3 text-gray-400">person</mat-icon>-->
+<!--            <input-->
+<!--              id="name"-->
+<!--              type="text"-->
+<!--              formControlName="name"-->
+<!--              class="appearance-none block w-full pl-10 px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"-->
+<!--              [ngClass]="{'border-red-500': signupForm.get('name')?.touched && signupForm.get('name')?.errors}"-->
+<!--            />-->
+<!--          </div>-->
+<!--          <p *ngIf="signupForm.get('name')?.touched && signupForm.get('name')?.errors?.['required']"-->
+<!--             class="mt-2 text-sm text-red-600">-->
+<!--            Name is required-->
+<!--          </p>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Email Field &ndash;&gt;-->
+<!--        <div>-->
+<!--          <label for="email" class="block text-sm font-medium text-gray-700">-->
+<!--            Email address-->
+<!--          </label>-->
+<!--          <div class="mt-1 relative">-->
+<!--            <mat-icon class="absolute left-3 top-3 text-gray-400">email</mat-icon>-->
+<!--            <input-->
+<!--              id="email"-->
+<!--              type="email"-->
+<!--              formControlName="email"-->
+<!--              class="appearance-none block w-full pl-10 px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"-->
+<!--              [ngClass]="{'border-red-500': signupForm.get('email')?.touched && signupForm.get('email')?.errors}"-->
+<!--            />-->
+<!--          </div>-->
+<!--          <p *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.errors?.['required']"-->
+<!--             class="mt-2 text-sm text-red-600">-->
+<!--            Email is required-->
+<!--          </p>-->
+<!--          <p *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.errors?.['email']"-->
+<!--             class="mt-2 text-sm text-red-600">-->
+<!--            Email format is not correct-->
+<!--          </p>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Password Field &ndash;&gt;-->
+<!--        <div>-->
+<!--          <label for="password" class="block text-sm font-medium text-gray-700">-->
+<!--            Password-->
+<!--          </label>-->
+<!--          <div class="mt-1 relative">-->
+<!--            <mat-icon class="absolute left-3 top-3 text-gray-400">lock</mat-icon>-->
+<!--            <input-->
+<!--              id="password"-->
+<!--              type="password"-->
+<!--              formControlName="password"-->
+<!--              class="appearance-none block w-full pl-10 px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"-->
+<!--              [ngClass]="{'border-red-500': signupForm.get('password')?.touched && signupForm.get('password')?.errors}"-->
+<!--            />-->
+<!--          </div>-->
+<!--          <p *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.errors?.['required']"-->
+<!--             class="mt-2 text-sm text-red-600">-->
+<!--            Password is required-->
+<!--          </p>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; Confirm Password Field &ndash;&gt;-->
+<!--        <div>-->
+<!--          <label for="confirmPassword" class="block text-sm font-medium text-gray-700">-->
+<!--            Confirm Password-->
+<!--          </label>-->
+<!--          <div class="mt-1 relative">-->
+<!--            <mat-icon class="absolute left-3 top-3 text-gray-400">lock</mat-icon>-->
+<!--            <input-->
+<!--              id="confirmPassword"-->
+<!--              type="password"-->
+<!--              formControlName="confirmPassword"-->
+<!--              class="appearance-none block w-full pl-10 px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"-->
+<!--              [ngClass]="{'border-red-500': signupForm.get('confirmPassword')?.touched &&-->
+<!--                    (signupForm.get('confirmPassword')?.errors?.['required'] ||-->
+<!--                     signupForm.get('confirmPassword')?.errors?.['passwordMismatch'])}"-->
+<!--            />-->
+<!--          </div>-->
+<!--          <p *ngIf="signupForm.get('confirmPassword')?.touched && signupForm.get('confirmPassword')?.errors?.['required']"-->
+<!--             class="mt-2 text-sm text-red-600">-->
+<!--            Confirm Password is required-->
+<!--          </p>-->
+<!--          <p *ngIf="signupForm.get('confirmPassword')?.touched && signupForm.get('confirmPassword')?.errors?.['passwordMismatch']"-->
+<!--             class="mt-2 text-sm text-red-600">-->
+<!--            Passwords do not match-->
+<!--          </p>-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--          <button-->
+<!--            type="submit"-->
+<!--            [disabled]="!signupForm.valid"-->
+<!--            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"-->
+<!--          >-->
+<!--            <mat-icon class="mr-2">login</mat-icon>-->
+<!--            Sign up-->
+<!--          </button>-->
+<!--        </div>-->
+<!--      </form>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Enhanced Stepper -->
+    <div class="bg-white  p-6">
+      <ol class="flex items-center w-full">
+        <ng-container *ngFor="let step of steps; let last = last">
+          <li class="flex items-center relative" [class.w-full]="!last">
+            <!-- Step Circle -->
+            <div class="flex items-center justify-center">
+              <div class="w-14 h-14 rounded-full border-4 flex items-center justify-center"
+                   [class.border-blue-600]="step.id <= currentStep"
+
+                   [class.border-gray-200]="step.id > currentStep">
+                <!-- Icon -->
+                <mat-icon>{{ step.icon }}</mat-icon>
+              </div>
+              <!-- Step Label -->
+              <span class="absolute -bottom-7 text-xs font-medium"
+                    [class.text-blue-600]="step.id <= currentStep"
+                    [class.text-gray-500]="step.id > currentStep">
+        {{ step.label }}
+      </span>
+            </div>
+            <!-- Progress Line -->
+            <div *ngIf="!last" class="w-full">
+              <div class="h-1 mx-4 relative">
+                <div class="absolute inset-0 bg-gray-200 rounded"></div>
+                <div class="absolute inset-0 rounded transition-all duration-300"
+                     [style.width]="step.id < currentStep ? '100%' : '0%'"></div>
+              </div>
+            </div>
+          </li>
+        </ng-container>
+      </ol>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="bg-white shadow-xl rounded-xl p-8">
+      <!-- Rest of the form content remains the same -->
+      <!-- Step 1: Basic Info -->
+      <div *ngIf="currentStep === 1">
+        <h6 class="text-xl font-semibold text-gray-900 mb-6">Account Information</h6>
+        <div class="grid gap-6 mb-6 sm:grid-cols-2">
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Email</label>
+            <input type="email" formControlName="email"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                   placeholder="name@company.com">
+            <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid"
+                 class="mt-2 text-sm text-red-600">
+              Please enter a valid email
+            </div>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
+            <input type="text" formControlName="name"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                   placeholder="John Doe">
+            <div *ngIf="signupForm.get('name')?.touched && signupForm.get('name')?.invalid"
+                 class="mt-2 text-sm text-red-600">
+              Name is required
+            </div>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Password</label>
+            <input type="password" formControlName="password"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                   placeholder="•••••••••">
+            <div *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid"
+                 class="mt-2 text-sm text-red-600">
+              Password must be at least 8 characters
+            </div>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Confirm Password</label>
+            <input type="password" formControlName="confirmPassword"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                   placeholder="•••••••••">
+            <div *ngIf="signupForm.hasError('mismatch')"
+                 class="mt-2 text-sm text-red-600">
+              Passwords do not match
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Location -->
+      <div *ngIf="currentStep === 2">
+        <h6 class="text-xl font-semibold text-gray-900 mb-7">Location & Profile</h6>
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
+          <!-- Profile Header -->
+          <div class="relative h-48 bg-gradient-to-r from-blue-500 to-indigo-600">
+            <div class="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
+              <div class="relative group cursor-pointer" (click)="openAvatarDialog()">
+                <img
+                  [src]="signupForm.avatar || 'https://via.placeholder.com/150'"
+                  alt="Profile photo"
+                  class="w-32 h-32 rounded-full border-4 border-white object-cover mb-16"
+                >
+                <div class="absolute inset-0 bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                  <span class="text-white text-sm">Change Photo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="grid gap-6 mb-6 sm:grid-cols-2">
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Country</label>
+            <input type="text" formControlName="country"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                   placeholder="Select your country">
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">State</label>
+            <input type="text" formControlName="state"
+                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                   placeholder="Select your state">
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="block mb-2 text-sm font-medium text-gray-900">Designation</label>
+            <input type="text" formControlName="designation"
+                   class="bg-gray-50 border border-gray-300
+                   text-gray-900 text-sm rounded-lg
+                   focus:ring-blue-600
+                   focus:border-blue-600 block w-full p-2.5"
+                   placeholder="Software Engineer ...">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Step 4: Languages & Bio -->
+      <div *ngIf="currentStep === 3">
+        <h6 class="text-xl font-semibold text-gray-900 mb-6">Tech Stack & Bio</h6>
+        <div class="space-y-6">
+                  <div formArrayName="skills" class="space-y-4">
+                    <div *ngFor="let skill of signupForm.get('skills')?.controls; let i=index"
+                         [formGroupName]="i"
+                         class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+                      <div class="sm:col-span-2">
+                        <input type="text" formControlName="name"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                               placeholder="Enter top 3 skills (e.g., Java, Angular)">
+                      </div>
+                      <div>
+                        <select formControlName="level"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5">
+                          <option value="">Select Level</option>
+                          <option value="beginner">Beginner</option>
+                          <option value="intermediate">Intermediate</option>
+                          <option value="advanced">Advanced</option>
+                        </select>
+                      </div>
+                    </div>
+
+                  <button *ngIf="this.signupForm.get('skills').length < 3" type="button" (click)="addSkill()"
+                          class="mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                    Add Another Skill
+                  </button>
+                    <button *ngIf="this.signupForm.get('skills').length > 1" type="button" (click)="removeSkill()"
+                            class="mt-4 text-white bg-red-700 hover:bg-red-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5" style="margin-left:30px ">
+                      Remove Skill
+                    </button>
+                </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-900">Bio</label>
+            <textarea formControlName="bio" rows="4"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5"
+                      placeholder="Tell us about yourself..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="mt-8 flex justify-between">
+        <button type="button"
+                *ngIf="currentStep > 1"
+                (click)="previousStep()"
+                class="text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5">
+          Previous
+        </button>
+
+        <button type="button"
+                *ngIf="currentStep < 3"
+                [disabled]="!isStepValid(currentStep)"
+                (click)="nextStep()"
+                class="ml-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                [class.opacity-50]="!isStepValid(currentStep)"
+                [class.cursor-not-allowed]="!isStepValid(currentStep)">
+          Next Step
+        </button>
+
+        <button type="submit"
+                *ngIf="currentStep === 3"
+                [disabled]="!signupForm.valid || isSubmitting"
+                class="ml-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                [class.opacity-50]="!signupForm.valid || isSubmitting"
+                [class.cursor-not-allowed]="!signupForm.valid || isSubmitting">
+          {{ isSubmitting ? 'Processing...' : 'Complete Signup' }}
+        </button>
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="submitSuccess"
+           class="mt-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        <div>
+          <p class="text-sm">Registration Successful!</p>
+          <p class="text-sm">Your account has been created successfully.</p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

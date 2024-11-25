@@ -1,0 +1,87 @@
+.question-container,
+.answer-card {
+  background: #fff; /* White background for question and answer cards */
+  /*border: 1px solid #e0e0e0; !* Light grey border *!*/
+  border-radius: 8px; /* Rounded corners */
+  /*padding: 20px; !* Inner padding for each section *!*/
+  /*margin-bottom: 20px; !* Space between sections *!*/
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1); /* Shadow for cards */
+  /*.answer-container {*/
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid #ddd;
+    padding: 16px;
+    /*border-radius: 8px;*/
+    margin-bottom: 16px;
+}
+
+.question-detail-section {
+  display: flex;
+  align-items: center; /* Align vertically in the center */
+}
+
+.vote-box {
+  display: flex;
+  flex-direction: column; /* Stack arrows and count vertically */
+  align-items: center; /* Center align contents */
+  background: #f0f0f0; /* Light background for the vote box */
+  border-radius: 8px; /* Rounded corners */
+  padding: 8px; /* Padding around the content */
+  margin-right: 16px; /* Space between the vote box and content */
+}
+
+.vote-count {
+  font-size: 16px; /* Font size for the vote count */
+  font-weight: bold; /* Make the vote count stand out */
+}
+.answer-content {
+  margin-top: 10px; /* Add space above answer content */
+}
+
+.comment-section {
+  margin-top: 10px; /* Space between comments */
+}
+
+.add-comment-section {
+  display: flex;
+  align-items: center;
+  margin-top: 10px; /* Space above comment section */
+}
+
+.image-preview {
+  margin: 10px 0; /* Margin for image preview */
+}
+.add-comment-section {
+  margin-top: 10px; /* Space above the comment section */
+}
+
+.mat-form-field {
+  display: flex;
+  align-items: center; /* Center the contents */
+}
+
+button.mat-icon-button {
+  margin-left: 8px; /* Add space between the input and the button */
+}
+
+.person-details {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+  .static-text {
+    color: #666;
+  }
+  .dynamic-text {
+    /*margin-top: 8px;*/
+    color: #110e0e;
+  }
+}
+
+.answer-image {
+  max-width: 100%; /* Ensures the image does not exceed its container's width */
+  height: auto; /* Maintains the aspect ratio of the image */
+  display: block; /* Makes the image a block element */
+  margin: 0 auto; /* Centers the image horizontally */
+}
+

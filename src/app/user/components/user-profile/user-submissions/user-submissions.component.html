@@ -1,0 +1,68 @@
+<div class="dashboard-container" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1 style="font-size: 2rem; margin: 0;">Dashboard</h1>
+    <button mat-raised-button color="primary" routerLink="/user/analytics">
+      View Analytics
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <mat-card class="stats-card">
+      <mat-card-content>
+        <div style="display: flex; align-items: center;">
+          <mat-icon class="stats-icon">help_outline</mat-icon>
+          <div>
+            <div style="color: #666;">Total Questions</div>
+            <div class="stats-value">{{stats.totalQuestions}}</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stats-card">
+      <mat-card-content>
+        <div style="display: flex; align-items: center;">
+          <mat-icon class="stats-icon">check_circle_outline</mat-icon>
+          <div>
+            <div style="color: #666;">Answers Given</div>
+            <div class="stats-value">{{stats.totalAnswers}}</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stats-card">
+      <mat-card-content>
+        <div style="display: flex; align-items: center;">
+          <mat-icon class="stats-icon">schedule</mat-icon>
+          <div>
+            <div style="color: #666;">Avg. Response Time</div>
+            <div class="stats-value">{{stats.avgResponseTime}}m</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="activity-list">
+    <mat-card-header>
+      <mat-card-title>Recent Activity</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngFor="let question of recentQuestions" class="activity-item">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <a [routerLink]="['/questions', question.id]" style="color: #1976d2; text-decoration: none;">
+            {{question.title}}
+          </a>
+          <span [class]="'status-chip ' + (question.accepted ? 'status-answered' : 'status-open')">
+                {{question.accepted ? 'Answered' : 'Open'}}
+              </span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+          <span style="color: #666;">{{question.answers.length}} answers</span>
+          <span style="color: #666;">Posted {{question.createdAt | date:'short'}}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

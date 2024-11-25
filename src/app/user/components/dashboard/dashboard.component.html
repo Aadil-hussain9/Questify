@@ -1,0 +1,87 @@
+<div class="min-h-screen bg-gray-50 py-6">
+  <!-- Main container with max width -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Scrollable container with adjusted height -->
+    <div class="border-x border-gray-200 bg-white min-h-[calc(100vh-6rem)] max-h-[700px] overflow-y-auto rounded-lg shadow-sm">
+      <!-- Sticky header with filters -->
+      <div class="sticky top-0 z-10 bg-white border-b border-gray-200 p-4 space-y-4 md:space-y-0 md:flex md:items-center md:justify-between">
+        <mat-radio-group class="flex items-center space-x-4">
+          <mat-radio-button value="radio" (click)="getLatestQuestions()" class="text-gray-700">
+            Latest Questions
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <mat-checkbox (change)="getMyQuestionsOnly($event)" class="text-gray-700">
+          Show My questions only
+        </mat-checkbox>
+      </div>
+
+      <!-- Questions List -->
+      <div class="divide-y divide-gray-200">
+        <!-- No Questions -->
+        <ng-container *ngIf="questions.length === 0">
+          <mat-card class="p-8">
+            <mat-card-content class="flex flex-col items-center justify-center text-gray-500">
+              <mat-icon class="text-4xl mb-2">sentiment_dissatisfied</mat-icon>
+              <p class="text-lg">No questions found.</p>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
+
+        <!-- Questions -->
+        <ng-container *ngIf="questions.length > 0">
+          <div *ngFor="let question of questions" class="p-4 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0">
+            <div class="flex flex-col md:flex-row gap-4">
+              <!-- Stats -->
+              <div class="flex md:flex-col justify-start md:w-24 space-x-4 md:space-x-0 md:space-y-2 text-sm text-gray-500">
+                <div class="flex flex-col items-center p-2 rounded-lg bg-gray-50">
+                  <span class="font-semibold text-gray-900">{{question.voteCount}}</span>
+                  <span>votes</span>
+                </div>
+                <div class="flex flex-col items-center p-2 rounded-lg bg-gray-50">
+                  <span class="font-semibold text-gray-900">{{question.viewCount}}</span>
+                  <span>views</span>
+                </div>
+              </div>
+
+              <!-- Question Content -->
+              <div class="flex-1">
+                <h6 class="text-lg font-thin text-blue-600 hover:text-blue-800 mb-2">
+                  <a routerLink="/user/question/{{question.id}}">{{question.title}}</a>
+                </h6>
+                <p class="text-gray-600 mb-4 line-clamp-2">{{question.body}}</p>
+
+                <!-- Tags -->
+                <div class="mb-4">
+                  <mat-chip-listbox>
+                    <mat-chip *ngFor="let tag of question.tags" class="bg-blue-100 text-blue-800 text-sm">
+                      {{tag}}
+                    </mat-chip>
+                  </mat-chip-listbox>
+                </div>
+
+                <!-- Meta Information -->
+                <div class="text-sm text-gray-500 flex justify-end items-center">
+                  <span>Posted by <span class="font-medium">{{question.userName}}</span></span>
+                  <span class="mx-2">•</span>
+                  <span>{{getFormattedDate(question.datePosted)}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- Pagination -->
+      <div class="sticky bottom-0 z-10 p-4 border-t border-gray-200 bg-white">
+        <mat-paginator
+          [length]="total"
+          [pageIndex]="pageNum"
+          [pageSize]="5"
+          (page)="pageIndexChange($event)"
+          class="bg-transparent">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

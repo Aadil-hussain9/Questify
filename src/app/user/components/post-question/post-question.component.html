@@ -1,0 +1,85 @@
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="bg-white shadow-lg rounded-lg p-6">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Ask a Question</h2>
+      
+      <form [formGroup]="validateForm" (ngSubmit)="submitQuestion()" class="space-y-6">
+        <!-- Title Field -->
+        <div>
+          <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+          <input
+            id="title"
+            type="text"
+            formControlName="title"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="What's your question? Be specific."
+          />
+          <p *ngIf="validateForm.get('title')?.touched && validateForm.get('title')?.errors?.['required']" 
+             class="mt-2 text-sm text-red-600">
+            Title is required
+          </p>
+        </div>
+
+        <!-- Details Field -->
+        <div>
+          <label for="body" class="block text-sm font-medium text-gray-700">Details</label>
+          <textarea
+            id="body"
+            formControlName="body"
+            rows="4"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            placeholder="Include all the information someone would need to answer your question"
+          ></textarea>
+          <p *ngIf="validateForm.get('body')?.touched && validateForm.get('body')?.errors?.['required']"
+             class="mt-2 text-sm text-red-600">
+            Details are required
+          </p>
+        </div>
+
+        <!-- Tags Field -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Tags</label>
+          <mat-form-field class="w-full">
+            <mat-chip-grid #chipGrid [formControl]="tags">
+              <mat-chip-row
+                *ngFor="let tag of tags.value"
+                (removed)="removeTag(tag)"
+                [removable]="true"
+              >
+                {{tag}}
+                <button matChipRemove>
+                  <span class="sr-only">Remove {{tag}}</span>
+                  ×
+                </button>
+              </mat-chip-row>
+              <input
+                placeholder="Add tags..."
+                [matChipInputFor]="chipGrid"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                [formControl]="currentTag"
+                [matAutocomplete]="auto"
+                (matChipInputTokenEnd)="addTag($event)"
+              />
+            </mat-chip-grid>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option *ngFor="let tag of filteredTags()" [value]="tag">
+                {{tag}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end">
+          <button
+            type="submit"
+            [disabled]="!validateForm.valid || isSubmitting"
+            class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {{ isSubmitting ? 'Posting...' : 'Post Your Question' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,78 @@
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1 style="font-size: 2rem; margin: 0;">Analytics</h1>
+    <button mat-raised-button>
+      <mat-icon>download</mat-icon>
+      Export Data
+    </button>
+  </div>
+
+  <div class="metrics-grid">
+    <mat-card class="metric-card">
+      <mat-card-content>
+        <div style="color: #666;">Response Rate</div>
+        <div class="metric-value">92%</div>
+        <div style="display: flex; align-items: center;">
+          <span class="trend-up">↑ 4.7%</span>
+          <span style="color: #666; margin-left: 0.5rem;">vs last month</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="metric-card">
+      <mat-card-content>
+        <div style="color: #666;">Avg. Time to Answer</div>
+        <div class="metric-value">15m</div>
+        <div style="display: flex; align-items: center;">
+          <span class="trend-down">↓ 2.3m</span>
+          <span style="color: #666; margin-left: 0.5rem;">vs last month</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="metric-card">
+      <mat-card-content>
+        <div style="color: #666;">Acceptance Rate</div>
+        <div class="metric-value">87%</div>
+        <div style="display: flex; align-items: center;">
+          <span class="trend-up">↑ 2.1%</span>
+          <span style="color: #666; margin-left: 0.5rem;">vs last month</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="metric-card">
+      <mat-card-content>
+        <div style="color: #666;">User Satisfaction</div>
+        <div class="metric-value">4.8/5</div>
+        <div style="display: flex; align-items: center;">
+          <span class="trend-up">↑ 0.2</span>
+          <span style="color: #666; margin-left: 0.5rem;">vs last month</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card style="margin-top: 2rem;">
+    <mat-card-header>
+      <mat-card-title>Activity Timeline</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngFor="let activity of activityTimeline; let last = last" class="timeline-item">
+        <div *ngIf="!last" class="timeline-line"></div>
+        <div [class]="'timeline-icon ' + getActivityIconClass(activity.type)" style="background-color: #e3f2fd;">
+          <mat-icon>{{getActivityIcon(activity.type)}}</mat-icon>
+        </div>
+        <div class="timeline-content">
+          <div>
+            {{activity.description}}
+            <a href="#" style="color: #1976d2; text-decoration: none;">{{activity.user}}</a>
+          </div>
+          <div style="color: #666; font-size: 0.875rem; margin-top: 0.25rem;">
+            {{activity.time | date:'short'}}
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

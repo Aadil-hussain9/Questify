@@ -1,0 +1,13 @@
+:host ::ng-deep .la-ball-newton-cradle > div:nth-child(1) {
+  background-color: red;
+}
+:host ::ng-deep .la-ball-newton-cradle > div:nth-child(2) {
+  background-color: blue;
+}
+:host ::ng-deep .la-ball-newton-cradle > div:nth-child(3) {
+  background-color: green;
+}
+:host ::ng-deep .la-ball-newton-cradle > div:nth-child(4) {
+  background-color: yellow;
+}
+

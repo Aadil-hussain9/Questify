@@ -1,0 +1,40 @@
+<h6 style="text-align: center; color: blue;" mat-dialog-title>Select Your Avatar</h6>
+<div mat-dialog-content>
+  <mat-tab-group>
+    <mat-tab label="Trending">
+      <div class="avatar-grid">
+        <img *ngFor="let avatar of trendingAvatars"
+             [src]="avatar"
+             class="avatar-option"
+             (click)="selectAvatar(avatar)"  alt=""/>
+      </div>
+    </mat-tab>
+    <mat-tab label="Male">
+      <div class="avatar-grid">
+        <img *ngFor="let avatar of maleAvatars"
+             [src]="avatar"
+             class="avatar-option"
+             (click)="selectAvatar(avatar)"  alt=""/>
+      </div>
+    </mat-tab>
+    <mat-tab label="Female">
+      <div class="avatar-grid">
+        <img *ngFor="let avatar of femaleAvatars"
+             [src]="avatar"
+             class="avatar-option"
+             (click)="selectAvatar(avatar)"  alt=""/>
+      </div>
+    </mat-tab>
+    <mat-tab label="Funky">
+      <div class="avatar-grid">
+        <img *ngFor="let avatar of funkyAvatars"
+             [src]="avatar"
+             class="avatar-option"
+             (click)="selectAvatar(avatar)"  alt=""/>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close (click)="onCancel()">Cancel</button>
+</div>

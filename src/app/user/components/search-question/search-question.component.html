@@ -1,0 +1,135 @@
+
+<!--<div class="container">-->
+<!--<div class="search-container">-->
+<!--<form [formGroup]="titleForm">-->
+<!--<mat-form-field class="search-field">-->
+<!--                <input-->
+<!--                matInput placeholder="Search by title" formControlName="title">-->
+<!--</mat-form-field>-->
+<!--<button mat-raised-button color="accent" [disabled]="titleForm.invalid" (click)="searchQuestionByTitle()">Search</button>-->
+<!--</form>-->
+<!--</div>-->
+
+
+<!--<div style="min-height: 91vh; padding: 30px;" *ngIf="questions">-->
+<!--  <div class="container">-->
+<!--    <ng-container *ngIf="questions.length === 0; else questionList">-->
+<!--      <mat-card class="empty-message" style="align-items: center">-->
+<!--        <mat-card-content>-->
+<!--          <mat-icon>sentiment_dissatisfied</mat-icon>-->
+<!--          <p style="margin-left: -90px">search for questions above!</p>-->
+<!--        </mat-card-content>-->
+<!--      </mat-card>-->
+<!--    </ng-container>-->
+<!--    <ng-template #questionList>-->
+<!--      <div class="child" *ngFor="let question of questions">-->
+<!--        <h2 class="question-title">-->
+<!--          <a style="text-decoration: none;" routerLink = "/user/question/{{question.id}}"> {{ question.title }} </a>-->
+<!--        </h2>-->
+<!--        <div class="question-content">{{ question.body }}</div>-->
+<!--        <div class="tags-container">-->
+<!--          <mat-chip-listbox>-->
+<!--            <mat-chip color="primary" *ngFor="let tag of question.tags">{{ tag }}</mat-chip>-->
+<!--          </mat-chip-listbox>-->
+<!--        </div>-->
+<!--        <hr>-->
+<!--        <h6 style="font: 400 0.7rem / 0.5rem Roboto, sans-serif; text-align: end" >-->
+<!--          Posted By: <b>{{ question.userName }}</b> - -->
+<!--          Posted On: <b>{{ question.datePosted | date: 'yyyy-MM-dd' }}</b>-->
+<!--        </h6>-->
+<!--      </div>-->
+<!--    </ng-template>-->
+<!--    <div class="pagination" *ngIf="questions.length>5">-->
+<!--      <mat-paginator-->
+<!--        [length]="total"-->
+<!--        [pageIndex]="pageNum"-->
+<!--        [pageSize]="5"-->
+<!--        (page)="pageIndexChange($event)">-->
+<!--      </mat-paginator>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--</div>-->
+
+<div class="w-full max-w-3xl mx-auto">
+  <div class="relative group">
+    <!-- Search Container -->
+    <div class="flex items-center gap-2 p-2 bg-white rounded-xl  transition-all duration-300">
+      <!-- Search Type Button -->
+      <button mat-button [matMenuTriggerFor]="menu"
+              class="min-w-[120px] px-3 py-1.5 text-left text-gray-700 hover:bg-gray-50 rounded-lg transition-colors">
+        <div class="flex items-center gap-2">
+          <mat-icon class="text-gray-500">
+            {{getSelectedType("icon")}}
+          </mat-icon>
+          <span class="text-sm truncate">
+            {{getSelectedType("label")}}
+          </span>
+          <mat-icon class="text-gray-400">arrow_drop_down</mat-icon>
+        </div>
+      </button>
+
+      <!-- Search Type Menu -->
+      <mat-menu #menu="matMenu" class="mt-2">
+        <button mat-menu-item *ngFor="let type of searchTypes"
+                (click)="setSearchType(type.value)"
+                class="flex items-center gap-2">
+          <mat-icon [class.text-blue-500]="selectedType === type.value">
+            {{ type.icon }}
+          </mat-icon>
+          <span>{{ type.label }}</span>
+        </button>
+      </mat-menu>
+
+      <!-- Divider -->
+      <div class="h-6 w-px bg-gray-200"></div>
+
+      <!-- Search Input -->
+      <div class="flex-1 relative">
+        <input type="text"
+               [(ngModel)]="searchQuery"
+               [placeholder]="getPlaceholder()"
+               (keyup.enter)="onSearch()"
+               class="w-full py-2 text-gray-700 bg-transparent outline-none placeholder-gray-400"
+               [class.pl-10]="!searchQuery">
+
+        <!-- Animated Search Icon -->
+        <mat-icon *ngIf="!searchQuery"
+                  class="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400 transition-all duration-300 group-focus-within:text-blue-500">
+          search
+        </mat-icon>
+      </div>
+
+      <!-- Search Button -->
+      <button (click)="onSearch()"
+              [disabled]="!searchQuery.trim()"
+              class="px-4 py-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300
+                     text-white rounded-lg shadow-md hover:shadow-lg
+                     transition-all duration-300 flex items-center gap-2">
+        <mat-icon class="text-sm">search</mat-icon>
+        <span class="hidden sm:inline">Search</span>
+      </button>
+    </div>
+
+    <!-- Search Suggestions -->
+    <div *ngIf="searchQuery && searchQuery.length > 2"
+         class="absolute w-full mt-2 py-2 rounded-lg shadow-lg border border-gray-200
+                opacity-0 -translate-y-2 transition-all duration-300
+                group-focus-within:opacity-100 group-focus-within:translate-y-0 z-50 bg-zinc-100">
+      <div class="px-4 py-2 text-sm text-gray-500">
+        Suggested
+        {{ selectedType === 'tag' ? 'tags' :
+        selectedType === 'user' ? 'users' :
+          'questions' }}...
+      </div>
+      <ul>
+        <li *ngFor="let suggestion of getSuggestions()"
+            class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+            (click)="onSuggestionClick(suggestion)">
+          {{ suggestion }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+

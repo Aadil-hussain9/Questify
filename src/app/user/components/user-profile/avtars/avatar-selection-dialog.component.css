@@ -1,0 +1,20 @@
+.avatar-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .avatar-option {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease-in-out;
+    cursor: pointer;
+  }
+  
+  .avatar-option:hover {
+    border-color: #3f51b5;
+  }
+  
