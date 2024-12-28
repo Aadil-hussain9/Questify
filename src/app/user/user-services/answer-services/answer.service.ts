@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {StorageService} from '../../../auth-services/storage-service/storage.service';
-import {Observable} from 'rxjs';
+import {Observable, map} from 'rxjs';
 import {UserLeaderBoardResponse} from '../../components/shared/dtos/leaderBoardResponse';
 
 const BASIC_URL= ['http://localhost:8080/'];
@@ -41,6 +41,19 @@ export class AnswerService {
         headers:this.createAuthorizationHeader()
       });
     }
+
+  getUserProfileDetails():Observable<any>{
+    const userId:any = StorageService.getUserId();
+    const uri = BASIC_URL+`api/user-details/${userId}`;
+    return this.http.get<UserLeaderBoardResponse>(uri,{
+      headers:this.createAuthorizationHeader()
+    }).pipe(map((response:any) =>{
+      if(response.photoUrl){
+        response.photoUrl = `https://api.dicebear.com/7.x/avataaars/svg?${response.photoUrl}`;
+      }
+      return response;
+    }));
+  }
 
   private createAuthorizationHeader() : HttpHeaders {
     let authHeaders:HttpHeaders = new HttpHeaders();

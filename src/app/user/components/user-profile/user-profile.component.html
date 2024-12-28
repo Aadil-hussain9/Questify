@@ -1,5 +1,5 @@
-<div class="container mx-auto px-4 py-8 max-w-4xl">
-  <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+<div class="container mx-auto px-4 py-8 max-w-4xl" style="overflow: auto;max-height: 90vh;">
+  <div class="bg-white rounded-lg shadow-lg">
     <!-- Profile Header -->
     <div class="relative h-48 bg-gradient-to-r from-blue-500 to-indigo-600">
       <div class="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
@@ -85,11 +85,29 @@
           </div>
         </div>
 
-        <!-- Skills Section -->
         <div class="space-y-4">
-          <h3 class="text-lg font-semibold text-gray-900">Skills</h3>
+          <h6 class="text-md font-medium text-gray-800">Skills</h6>
+          <div *ngFor="let skill of profile.skills; let i = index" class="flex items-center space-x-4">
+            <div class="flex-1">
+              <label class="block text-sm font-medium text-gray-700">Skill Name</label>
+              <p class="mt-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                {{ skill.name || 'Unnamed Skill' }}
+              </p>
+            </div>
+            <div class="w-48">
+              <label class="block text-sm font-medium text-gray-700">Level</label>
+              <p class="mt-1 px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+                {{ getProficiencyLabel(skill.proficiency) }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="space-y-4" *ngIf = "isEditing">
+          <h6 class="text-md font-medium text-gray-800">Add More Skills</h6>
           <div class="space-y-4">
-            <div *ngFor="let skill of profile.skills; let i = index" class="flex items-center space-x-4">
+            <div *ngFor="let skill of Skills; let i = index" class="flex items-center space-x-4">
               <div class="w-full">
                 <label for="skill-name" class="block text-sm font-medium text-gray-700">Skill Name</label>
                 <input
@@ -106,13 +124,13 @@
                 <label for="skill-level" class="block text-sm font-medium text-gray-700">Level</label>
                 <select
                   id="skill-level"
-                  [(ngModel)]="skill.level"
+                  [(ngModel)]="skill.proficiency"
                   [disabled]="!isEditing"
                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                 >
-                  <option value="1">Beginner</option>
-                  <option value="2">Intermediate</option>
-                  <option value="3">Advanced</option>
+                  <option value=0>Beginner</option>
+                  <option value=1>Intermediate</option>
+                  <option value=2>Advanced</option>
                 </select>
               </div>
 

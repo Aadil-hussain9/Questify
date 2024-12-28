@@ -18,15 +18,14 @@ export class AuthService {
               private storage:StorageService) { }
 
   signUp(signupRequest:any):Observable<any>{
+    debugger
     return this.http.post(BASIC_URL+"signup",signupRequest)
   }
 
   login(loginRequest:any):Observable<any>{
-    debugger
     return this.http.post(BASIC_URL+"authentication",loginRequest ,{observe:'response'})
       .pipe(tap(__=> this.log("user Authentication")),
       map((res:HttpResponse<any>)=>{
-        debugger
         this.storage.saveUser(res.body);
         const tokenLength = res.headers.get(AUTH_HEADER)?.length;
         const bearerToken = res.headers.get(AUTH_HEADER)?.substring(6,tokenLength);

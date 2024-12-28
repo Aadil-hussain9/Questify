@@ -1,19 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {MatCard, MatCardContent} from '@angular/material/card';
-import {MatFormField, MatFormFieldModule, MatLabel} from '@angular/material/form-field';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {AuthService} from '../../auth-services/auth-service/auth.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Route, Router, RouterLink} from '@angular/router';
+import {Router} from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
 import {CommonModule} from '@angular/common';
-import {MatIcon, MatIconModule} from '@angular/material/icon';
+import {MatIconModule} from '@angular/material/icon';
 import {MatStepperModule} from '@angular/material/stepper';
 import {
   AvatarSelectionDialogComponent
 } from '../../user/components/user-profile/avtars/avatar-selection-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -119,13 +118,13 @@ export class SignupComponent implements OnInit{
       country: ['', Validators.required],
       state: ['', Validators.required],
       avatar: [''],
-      designation: [''],
+      designation: ['',Validators.required],
 
       // Step 3
       skills: this.fb.array([]),
 
       // Step 4
-      bio: ['', [Validators.required, Validators.maxLength(500)]]
+      bio: ['', [Validators.maxLength(500)]]
     }, {
       validators: this.passwordMatchValidator
     });
@@ -150,11 +149,10 @@ export class SignupComponent implements OnInit{
           !this.signupForm.hasError('mismatch');
       case 2:
         return this.signupForm.get('country')?.valid &&
-          this.signupForm.get('state')?.valid;
+          this.signupForm.get('state')?.valid &&
+          this.signupForm.get('designation')?.valid;
       case 3:
-        return this.signupForm.get('skills')?.valid;
-      case 4:
-        return this.signupForm.get('bio')?.valid;
+        return true;
       default:
         return false;
     }
@@ -198,19 +196,21 @@ export class SignupComponent implements OnInit{
       this.isSubmitting = true;
       const profileDTO = this.mapToProfileDTO(this.signupForm.value);
       console.log("dto .... ",profileDTO)
-      this.signupService.submitSignupData(profileDTO).subscribe({
-        next: (response) => {
+      this.signupService.signUp(profileDTO).subscribe({
+        next: (response:any) => {
           this.submitSuccess = true;
           this.isSubmitting = false;
+          setTimeout(() => {
+            this.router.navigateByUrl('/login').then(() => {
+              console.log('Navigation successful, clearing form data...');
+              this.signupForm.reset();
+            });
+          }, 2000); // 5000ms = 5 seconds
         },
         error: (error) => {
           this.isSubmitting = false;
         }
       });
-      this.router.navigateByUrl('/login').then(() => {
-                    console.log('Navigation successful, clearing form data...');
-                    this.signupForm.reset();
-                  });
     }
   }
 
@@ -218,12 +218,12 @@ export class SignupComponent implements OnInit{
       const dialogRef =
         this.dialog.open(AvatarSelectionDialogComponent, {
           width: '500px',
-          data: { selectedAvatar: this.signupForm.avatar },
+          data: { selectedAvatar: this.signupForm.get('avatar')?.value },
         });
 
       dialogRef.afterClosed().subscribe((result) => {
         if (result) {
-          this.signupForm.avatar = result;
+          this.signupForm.get('avatar')?.setValue(result);
         }
       });
   }
@@ -232,12 +232,18 @@ export class SignupComponent implements OnInit{
     return {
       email: formValue.email,
       name: formValue.name,
-      photoUrl: formValue.avatar,
+      password:formValue.password,
+      photoUrlSeed: this.getSeedFromAvatarUrl(formValue.avatar),
       designation: formValue.designation,
       location: `${formValue.state}, ${formValue.country}`,
       skills: formValue.skills,
       bio: formValue.bio,
     };
+  }
+
+  getSeedFromAvatarUrl(url: string): string {
+    const match = url.match(/seed=[^&]+(.*)$/); // Match seed and everything after it
+    return match ? match[0] : ''; // Return the full st
   }
 }
 
@@ -247,12 +253,14 @@ export interface Skill {
 }
 
 export interface ProfileDto {
-  photoUrl: string;
+  photoUrlSeed: string;
   name: string;
   email: string;
+  password:string;
   designation: string;
   location: string;
   skills: Skill[];
   bio: string;
 }
+
 

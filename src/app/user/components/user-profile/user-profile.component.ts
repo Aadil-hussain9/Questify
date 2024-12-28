@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';  // Import MatFormFieldModule
 import { MatInputModule } from '@angular/material/input';          // Import MatInputModule
 import { MatButtonModule } from '@angular/material/button';       // Import MatButtonModule
@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { AvatarSelectionDialogComponent } from './avtars/avatar-selection-dialog.component';
+import { AnswerService } from '../../user-services/answer-services/answer.service';
 
 
 @Component({
@@ -27,22 +28,30 @@ import { AvatarSelectionDialogComponent } from './avtars/avatar-selection-dialog
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })
-export class UserProfileComponent {
-  constructor(private dialog: MatDialog){}
-  isEditing = false;
+export class UserProfileComponent implements OnInit{
+  constructor(private dialog: MatDialog,
+              private answerService :AnswerService){}
 
-  profile = {
-    photoUrl: '',
-    name: 'Adil Hussain Dar',
-    email: 'adil@example.com',
-    designation: 'Software Engineer',
-    location: 'Srinagar',
-    skills: [
-      { name: 'Angular', level: 3 },
-      { name: 'TypeScript', level: 2 },
-    ],
-    bio: 'I am a passionate developer who loves coding and building scalable applications.',
-  };
+  ngOnInit(): void {
+        this.getUserProfileDetails();
+    // this.profile.photoUrl = `https://api.dicebear.com/7.x/avataaars/svg?{profile.photoUrl}`;
+    }
+  isEditing = false;
+  Skills: Array<{ name: string; proficiency: number }> | any = [];
+
+  profile:any = [];
+  //   {
+  //   photoUrl: '',
+  //   name: 'Adil Hussain Dar',
+  //   email: 'adil@example.com',
+  //   designation: 'Software Engineer',
+  //   location: 'Srinagar',
+  //   skills: [
+  //     { name: 'Angular', level: 3 },
+  //     { name: 'TypeScript', level: 2 },
+  //   ],
+  //   bio: 'I am a passionate developer who loves coding and building scalable applications.',
+  // };
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
@@ -50,13 +59,9 @@ export class UserProfileComponent {
       this.saveProfile();
     }
   }
-
-  updatePhoto() {
-    alert('Update photo clicked!');
-  }
-
+  
   addSkill() {
-    this.profile.skills.push({ name: '', level: 1 });
+    this.Skills.push({ name: '', level: 1 });
   }
 
   removeSkill(index: number) {
@@ -64,6 +69,7 @@ export class UserProfileComponent {
   }
 
   saveProfile() {
+    this.profile.skills = this.Skills;
     console.log('Profile saved:', this.profile);
   }
 
@@ -75,12 +81,32 @@ export class UserProfileComponent {
       data: { selectedAvatar: this.profile.photoUrl },
     });
 
+
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.profile.photoUrl = result;
       }
     });
   }
+    console.log("url ",this.profile.photoUrl);
 }
 
+ getUserProfileDetails(){
+    this.answerService.getUserProfileDetails().subscribe((response:any) =>{
+      this.profile = response;
+    })
+ }
+
+  getProficiencyLabel(level: number): string {
+    switch (level) {
+      case 0:
+        return 'Beginner';
+      case 1:
+        return 'Intermediate';
+      case 2:
+        return 'Advanced';
+      default:
+        return 'Unknown';
+    }
+  }
 }
