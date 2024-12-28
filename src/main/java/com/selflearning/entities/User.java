@@ -18,6 +18,9 @@ public class User {
     private String password;
     private Date createdDate = new Date();
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private UserDetails userDetails;
+
     // Utility method to get the year
     public int getCreatedYear() {
         return createdDate.toInstant()
@@ -25,4 +28,6 @@ public class User {
                 .toLocalDate()
                 .getYear();
     }
+
+
 }

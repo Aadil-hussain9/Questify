@@ -2,21 +2,21 @@ package com.selflearning.controllers;
 
 import com.selflearning.dtos.AnswerVoteDto;
 import com.selflearning.dtos.QuestionVoteDto;
+import com.selflearning.services.BannerServiceImpl;
 import com.selflearning.services.VoteService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class VoteController {
 
     private final VoteService voteService;
+    private final BannerServiceImpl bannerService;
 
-    public VoteController(VoteService voteService) {
+    public VoteController(VoteService voteService, BannerServiceImpl bannerService) {
         this.voteService = voteService;
+        this.bannerService = bannerService;
     }
 
     @PostMapping("/vote")
@@ -35,5 +35,10 @@ public class VoteController {
             return ResponseEntity.badRequest().body("Unfortunately vote not Saved");
         }
         return ResponseEntity.ok().body(dto);
+    }
+
+    @GetMapping("/banner")
+    public ResponseEntity<?> getBanner(){
+        return ResponseEntity.ok(bannerService.getBannerStatus());
     }
 }

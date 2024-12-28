@@ -1,12 +1,13 @@
 package com.selflearning.services;
 
-import com.selflearning.dtos.SignupDto;
-import com.selflearning.dtos.UserDto;
-import com.selflearning.dtos.UserLeaderBoardResponse;
+import com.selflearning.dtos.*;
 import com.selflearning.entities.Answer;
+import com.selflearning.entities.SkillEntity;
 import com.selflearning.entities.User;
+import com.selflearning.entities.UserDetails;
 import com.selflearning.repositories.AnswerRepository;
 import com.selflearning.repositories.QuestionRepository;
+import com.selflearning.repositories.UserDetailsRepository;
 import com.selflearning.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -26,11 +27,13 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
+    private final UserDetailsRepository userDetailsRepository;
 
-    public UserServiceImpl(UserRepository userRepository, AnswerRepository answerRepository, QuestionRepository questionRepository){
+    public UserServiceImpl(UserRepository userRepository, AnswerRepository answerRepository, QuestionRepository questionRepository, UserDetailsRepository userDetailsRepository){
         this.userRepository = userRepository;
         this.answerRepository = answerRepository;
         this.questionRepository = questionRepository;
+        this.userDetailsRepository = userDetailsRepository;
     }
 
     @Override
@@ -43,11 +46,34 @@ public class UserServiceImpl implements UserService{
         user.setPassword(new BCryptPasswordEncoder().encode(signupDto.getPassword()));
        User savedUser = userRepository.save(user);
 
-        UserDto createdUser = UserDto.builder()
+       UserDetails userDetails = dtoToEntity(signupDto);
+       userDetails.setUser(user);
+       userDetailsRepository.save(userDetails);
+
+        return UserDto.builder()
                 .name(savedUser.getName())
                 .email(savedUser.getEmail())
                 .build();
-        return createdUser;
+    }
+
+    public static UserDetails dtoToEntity(SignupDto dto) {
+        UserDetails userProfile = new UserDetails();
+        userProfile.setPhotoAvtarUrl(dto.getPhotoUrl());
+        userProfile.setDesignation(dto.getDesignation());
+        userProfile.setLocation(dto.getLocation());
+        userProfile.setBio(dto.getBio());
+        userProfile.setSkills(
+                dto.getSkills().stream()
+                        .map(skill -> {
+                            SkillEntity skillEntity = new SkillEntity();
+                            skillEntity.setUserDetails(userProfile);
+                            skillEntity.setName(skill.getName());
+                            skillEntity.setProficiency(skill.getProficiency());
+                            return skillEntity;
+                        })
+                        .collect(Collectors.toList())
+        );
+        return userProfile;
     }
 
     @Override
@@ -135,6 +161,35 @@ public class UserServiceImpl implements UserService{
                 processedCount.get());
 
         return userLeaderBoardResponses;
+    }
+
+    @Override
+    public UserProfileDto getUserDetails(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        UserDetails userDetails = userDetailsRepository.findByUserId(userId);
+
+        if (user == null || userDetails == null) {
+            return null;
+        }
+
+        return UserProfileDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .designation(userDetails.getDesignation())
+                .location(userDetails.getLocation())
+                .bio(userDetails.getBio())
+                .photoUrl(userDetails.getPhotoAvtarUrl())
+                .skills(mapToSkillsDto(userDetails.getSkills()))
+                .build();
+    }
+
+    private static List<Skill> mapToSkillsDto(List<SkillEntity> skillEntityList) {
+        return skillEntityList.stream()
+                .map(skillEntity -> Skill.builder()
+                        .name(skillEntity.getName())
+                        .proficiency(skillEntity.getProficiency())
+                        .build())
+                .toList();
     }
 
     private UserLeaderBoardResponse processUserForLeaderboard(User user, AtomicInteger processedCount) {
